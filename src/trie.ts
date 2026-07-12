@@ -1,7 +1,7 @@
-interface TrieNode<T = unknown> {
-    readonly staticChildren: Map<string, TrieNode<T>>; // all children of root
-    paramChild: TrieNode<T> | null; // bottom child has an param node
-    wildcardChild: TrieNode<T> | null; // bottom child has an wildcard node
+export interface TrieNode<T = unknown> {
+    readonly staticChildren: Map<string, TrieNode<T>>; // children of current node, but static
+    paramChild: TrieNode<T> | null; // bottom child has an param node, paramChild node contains inside paramName
+    wildcardChild: TrieNode<T> | null; // bottom child has an wildcard node, same for wildcard
     readonly paramName: string | null; // paramName = "id" when node equals to [:id] (example: /test/:id)
     readonly wildcardName: string | null; // wildcardName = * when node equals to * (example: /test/*)
     isEndpoint: boolean; 
@@ -19,7 +19,7 @@ function buildTrie<T = unknown>(routes: Route<T>[]): TrieNode<T> {
 
     for (const route of routes) {
         const segments = splitPath(route.path)
-        insertRoute(root, segments, route.handler)
+        insertRoute(root, segments, route.path, route.handler)
     }
     
     return root
@@ -28,9 +28,13 @@ function buildTrie<T = unknown>(routes: Route<T>[]): TrieNode<T> {
 function insertRoute<T>(
     root: TrieNode<T>,
     segments: string[],
+    path: string, // error log
     handler: T
 ) {
     if (segments.length === 0) {
+        if (root.isEndpoint) {
+            throw new Error(`Duplicate route: "${path}" is already defined.`)
+        }
         root.isEndpoint = true
         root.handler = handler
         return
@@ -42,9 +46,12 @@ function insertRoute<T>(
         const segment = segments[i]
         const isLast = i === segments.length - 1
 
-        node = descendOrCreate(node, segment)
+        node = descendOrCreate(node, segment, path)
 
         if (isLast) {
+            if (node.isEndpoint) {
+                throw new Error(`Duplicate route "${path}" is already defined.`)
+            }
             node.isEndpoint = true
             node.handler = handler
         }
@@ -54,13 +61,26 @@ function insertRoute<T>(
 
 function descendOrCreate<T>(
     node: TrieNode<T>,
-    segment: string
-): TrieNode<T> {
+    segment: string,
+    path: string,
+): TrieNode<T> { // returns next node or static child
+    if (node.wildcardName !== null) {
+        throw new Error(`Cannot define "${path}: wildcard "*" captures the rest of the path, so routes under it are unreachable`)
+    }
+
     if (segment.startsWith(':')) {
         const name = segment.slice(1)
+
+        if (name.length === 0) {
+            throw new Error(`Invalid route "${path}": parameter name is empty (segment ":").`)
+        }
+
         if (node.paramChild === null) {
             node.paramChild = createNode<T>(name)
+        } else if (node.paramChild.paramName !== name) {
+            throw new Error(`Conflicting parameters in route "${path}": ":${name}" conflicts with existing ":${node.paramChild.paramName}" at the same level. Only one parameter name is allowed per level.`)
         }
+
         return node.paramChild
     }
 
@@ -70,7 +90,6 @@ function descendOrCreate<T>(
         }
         return node.wildcardChild
     }
-
 
     const existing = node.staticChildren.get(segment)
 
