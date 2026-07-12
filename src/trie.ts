@@ -8,13 +8,12 @@ export interface TrieNode<T = unknown> {
     handler: T | null;
 }
 
-interface Route<T = unknown> {
+export interface Route<T = unknown> {
     path: string;
     handler: T;
 }
 
-
-function buildTrie<T = unknown>(routes: Route<T>[]): TrieNode<T> {
+export function buildTrie<T = unknown>(routes: Route<T>[]): TrieNode<T> {
     const root = createNode<T>()
 
     for (const route of routes) {
@@ -103,7 +102,7 @@ function descendOrCreate<T>(
 }
 
 // "/path/to/file" => ["", "path", "to", "file"] => filter
-function splitPath(path: string): string[] {
+export function splitPath(path: string): string[] {
     return path.split('/').filter(segment => segment.length > 0)
 }
 
