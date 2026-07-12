@@ -1,8 +1,9 @@
 <script lang="ts">
     import { getContext } from "svelte";
     import { readable, type Readable } from "svelte/store";
+    import type { Snippet } from "svelte";
     import { ROUTER_CONTEXT } from "./router";
-    import { RouterStore, RouterState } from "./store";
+    import type { RouterStore, RouterState } from "./store";
 
     let {
         to,
@@ -11,6 +12,13 @@
         class: className = "",
         children,
         ...restProps
+    }: {
+        to: string;
+        replace?: boolean;
+        activeClass?: string;
+        class?: string;
+        children?: Snippet;
+        [key: string]: unknown;
     } = $props();
 
     const fallback = readable<RouterState>({ path: "", hash: "", query: new URLSearchParams() });
