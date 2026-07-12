@@ -62,6 +62,9 @@ export function createRouterStore(): RouterStore {
 
     function navigate(to: string, options?: { replace?: boolean }): void {
         if (options?.replace) replace(to)
+        else {
+            push(to)
+        }
     }
 
     return {
