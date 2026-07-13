@@ -1,6 +1,6 @@
 {
   "name": "svelte-wayfind",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Svelte Router with high performance dynamic route matching",
   "type": "module",
   "main": "./dist/index.cjs",
