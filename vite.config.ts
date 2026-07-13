@@ -7,9 +7,10 @@ export default defineConfig({
     plugins: [
         svelte(),
         dts({
-            include: ["src/**/*.ts", "src/**/*.svelte"],
+            include: ["src/**/*.ts"],
             exclude: ["src/**/*.test.ts"],
             insertTypesEntry: true,
+            copyDtsFiles: true,
         }),
     ],
     build: {
