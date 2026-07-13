@@ -1,12 +1,12 @@
 import { describe, it, expect } from 'vitest';
-import { buildTrie, splitPath, type Route } from '../trie';
+import { buildTrie, splitPath, type RouteDefinition } from '../trie';
 import { match, matchPath } from '../match';
 
-function build(routes: Route<string>[]) {
+function build(routes: RouteDefinition<string>[]) {
   return buildTrie(routes);
 }
 
-function matchRoute(routes: Route<string>[], path: string) {
+function matchRoute(routes: RouteDefinition<string>[], path: string) {
   const root = build(routes);
   return matchPath(root, path);
 }
@@ -126,7 +126,7 @@ describe('buildTrie — validation (fail fast)', () => {
 });
 
 describe('match — static routes', () => {
-  const routes: Route<string>[] = [
+  const routes: RouteDefinition<string>[] = [
     { path: '/', handler: 'Home' },
     { path: '/about', handler: 'About' },
     { path: '/contact', handler: 'Contact' },
@@ -154,7 +154,7 @@ describe('match — static routes', () => {
 });
 
 describe('match — parameters', () => {
-  const routes: Route<string>[] = [
+  const routes: RouteDefinition<string>[] = [
     { path: '/user/:id', handler: 'UserProfile' },
     { path: '/user/:id/settings', handler: 'Settings' },
     { path: '/user/:id/posts/:postId', handler: 'PostDetail' },
@@ -184,7 +184,7 @@ describe('match — parameters', () => {
 });
 
 describe('match — wildcard', () => {
-  const routes: Route<string>[] = [
+  const routes: RouteDefinition<string>[] = [
     { path: '/blog/*', handler: 'Blog' },
   ];
 
@@ -201,7 +201,7 @@ describe('match — wildcard', () => {
 });
 
 describe('match — priority static > param > wildcard', () => {
-  const routes: Route<string>[] = [
+  const routes: RouteDefinition<string>[] = [
     { path: '/user/:id', handler: 'ParamRoute' },
     { path: '/user/x', handler: 'StaticRoute' },
   ];
@@ -220,7 +220,7 @@ describe('match — priority static > param > wildcard', () => {
 });
 
 describe('match — backtracking', () => {
-  const routes: Route<string>[] = [
+  const routes: RouteDefinition<string>[] = [
     { path: '/a/:id/b', handler: 'ABRoute' },
     { path: '/a/x/c', handler: 'AXC' },
   ];
@@ -245,7 +245,7 @@ describe('match — backtracking', () => {
 });
 
 describe('match — deeply nested routes (4-5 levels)', () => {
-  const routes: Route<string>[] = [
+  const routes: RouteDefinition<string>[] = [
     { path: '/a/b/c/d/e', handler: 'Deep' },
     { path: '/a/:x/c/d/:y', handler: 'DeepParam' },
     { path: '/a/b/:x/d/e', handler: 'DeepMixed' },
@@ -275,7 +275,7 @@ describe('match — deeply nested routes (4-5 levels)', () => {
 });
 
 describe('match - URL encoding', () => {
-  const routes: Route<string>[] = [
+  const routes: RouteDefinition<string>[] = [
     { path: '/user/:id', handler: 'UserProfile' },
     { path: '/search/*', handler: 'Search' },
   ];
@@ -298,21 +298,21 @@ describe('match - URL encoding', () => {
 
 describe('match — edge cases', () => {
   it('trailing slash does not affect matching', () => {
-    const routes: Route<string>[] = [
+    const routes: RouteDefinition<string>[] = [
       { path: '/about', handler: 'About' },
     ];
     expect(matchRoute(routes, '/about/')?.node.handler).toBe('About');
   });
 
   it('empty path matches root "/"', () => {
-    const routes: Route<string>[] = [
+    const routes: RouteDefinition<string>[] = [
       { path: '/', handler: 'Home' },
     ];
     expect(matchRoute(routes, '/')?.node.handler).toBe('Home');
   });
 
   it('interleaved routes: intermediate endpoint with children', () => {
-    const routes: Route<string>[] = [
+    const routes: RouteDefinition<string>[] = [
       { path: '/user/:id', handler: 'Profile' },
       { path: '/user/:id/settings', handler: 'Settings' },
       { path: '/user/:id/posts', handler: 'Posts' },

@@ -8,12 +8,12 @@ export interface TrieNode<T = unknown> {
     handler: T | null;
 }
 
-export interface Route<T = unknown> {
+export interface RouteDefinition<T = unknown> {
     path: string;
     handler: T;
 }
 
-export function buildTrie<T = unknown>(routes: Route<T>[]): TrieNode<T> {
+export function buildTrie<T = unknown>(routes: RouteDefinition<T>[]): TrieNode<T> {
     const root = createNode<T>()
 
     for (const route of routes) {

@@ -1,4 +1,4 @@
-export { buildTrie, splitPath, type Route, type TrieNode } from "./trie";
+export { buildTrie, splitPath, type RouteDefinition, type TrieNode } from "./trie";
 export { match, matchPath, type MatchResult } from "./match";
 export { createCachedMatcher, type CachedMatcher } from "./cache";
 export { createRouterStore, type RouterStore, type RouterState } from "./store";
@@ -7,7 +7,7 @@ export {
     isLazy,
     useRouter,
     ROUTER_CONTEXT,
-    type AppRoute,
+    type Route,
     type RouteHandler,
     type LazyWrapper,
     type Component,

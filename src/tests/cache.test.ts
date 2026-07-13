@@ -1,9 +1,9 @@
 import { describe, it, expect } from "vitest";
-import { buildTrie, type Route } from "../trie";
+import { buildTrie, type RouteDefinition } from "../trie";
 import { createCachedMatcher } from "../cache";
 
 describe("createCachedMatcher", () => {
-    const routes: Route<string>[] = [
+    const routes: RouteDefinition<string>[] = [
         { path: "/", handler: "Home" },
         { path: "/user/:id", handler: "UserProfile" },
     ];

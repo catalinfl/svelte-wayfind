@@ -1,5 +1,5 @@
 import { getContext } from "svelte";
-import type { Route } from "./trie";
+import type { RouteDefinition } from "./trie";
 import type { RouterStore } from "./store";
 
 export type Component = any;
@@ -10,7 +10,7 @@ export interface LazyWrapper {
 }
 
 export type RouteHandler = Component | LazyWrapper;
-export type AppRoute = Route<RouteHandler>;
+export type Route = RouteDefinition<RouteHandler>;
 
 export function lazy(load: () => Promise<{default: Component}>): LazyWrapper {
     return { __lazy: true, load };
