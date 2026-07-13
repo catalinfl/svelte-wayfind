@@ -2,8 +2,8 @@
     import { getContext } from "svelte";
     import { readable, type Readable } from "svelte/store";
     import type { Snippet } from "svelte";
-    import { ROUTER_CONTEXT } from "./router";
-    import type { RouterStore, RouterState } from "./store";
+    import { ROUTER_CONTEXT } from "../router";
+    import type { RouterStore, RouterState } from "../store";
 
     let {
         to,

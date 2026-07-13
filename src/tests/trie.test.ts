@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { buildTrie, splitPath, type Route } from './trie';
-import { match, matchPath } from './match';
+import { buildTrie, splitPath, type Route } from '../trie';
+import { match, matchPath } from '../match';
 
 function build(routes: Route<string>[]) {
   return buildTrie(routes);

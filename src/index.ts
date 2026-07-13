@@ -12,5 +12,5 @@ export {
     type LazyWrapper,
     type Component,
 } from "./router";
-export { default as Router } from "./Router.svelte"
-export { default as Link } from "./Link.svelte";
+export { default as Router } from "./components/Router.svelte";
+export { default as Link } from "./components/Link.svelte";

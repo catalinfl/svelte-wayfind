@@ -1,9 +1,9 @@
 <script lang="ts">
     import { untrack, setContext } from "svelte";
-    import { buildTrie } from "./trie";
-    import { createCachedMatcher } from "./cache";
-    import { createRouterStore } from "./store";
-    import { ROUTER_CONTEXT, isLazy, type AppRoute, type Component } from "./router";
+    import { buildTrie } from "../trie";
+    import { createCachedMatcher } from "../cache";
+    import { createRouterStore } from "../store";
+    import { ROUTER_CONTEXT, isLazy, type AppRoute, type Component } from "../router";
 
     let { routes, notFound = null }: { routes: AppRoute[]; notFound?: Component } = $props();
 
