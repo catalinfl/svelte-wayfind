@@ -26,14 +26,14 @@ npm install svelte-wayfind
 
 ```svelte
 <script lang="ts">
-    import { Router, Link, lazy, type AppRoute } from "svelte-wayfind";
+    import { Router, Link, lazy, type Route } from "svelte-wayfind";
     import Home from "./pages/Home.svelte";
     import About from "./pages/About.svelte";
     import NotFound from "./pages/NotFound.svelte";
 
     const User = lazy(() => import("./pages/User.svelte"));
 
-    const routes: AppRoute[] = [
+    const routes: Route[] = [
         { path: "/", handler: Home },
         { path: "/about", handler: About },
         { path: "/user/:id", handler: User },
@@ -82,7 +82,7 @@ Segments are `decodeURIComponent`-ed automatically. `/user/john%20doe` → `{ id
 
 | Prop | Type | Description |
 |---|---|---|
-| `routes` | `AppRoute[]` | Route definitions |
+| `routes` | `Route[]` | Route definitions |
 | `notFound` | `Component` | Component rendered on 404 (optional) |
 
 ### `<Link>`
