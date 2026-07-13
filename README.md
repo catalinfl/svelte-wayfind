@@ -43,7 +43,7 @@ npm install svelte-wayfind
 </script>
 
 <nav>
-    <Link to="/">Acasă</Link>
+    <Link to="/">Home</Link>
     <Link to="/about">About</Link>
     <Link to="/user/42">User 42</Link>
     <Link to="/blog/2024/01/hello">Blog</Link>
