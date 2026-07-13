@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.2.0
+
+### 🏗 Structure
+
+- **Added `.npmignore`** — excludes `src/`, `demo/`, config files, and logs from the published npm package, keeping the distributed artifact lean
+
+### 📖 Documentation
+
+- README updated to reflect the `AppRoute` → `Route` type rename (completing the rename introduced in 1.1.0)
+
 ## 1.1.0
 
 ### ✨ Features
